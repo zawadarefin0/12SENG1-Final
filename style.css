@@ -132,6 +132,10 @@ form {
     border-radius: 150px;
 }
 
+.container.active .toggle-box::before {
+    left: 50%;
+}
+
 .toggle-panel {
     position: absolute;
     width: 50%;
