@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito+Sans:ital,opsz,wght@0,6..12,200..1000;1,6..12,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap');
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: "Nunito Sans", "sans-serif";
+    font-family: "Lexend", "sans-serif";
 }
 
 
@@ -23,6 +23,7 @@ body {
     background: #fff;
     border-radius: 30px;
     box-shadow: 0 0 30px rgba(0,0,0,.2);
+    overflow: hidden;
 }
 
 .form-box {
@@ -30,11 +31,17 @@ body {
     width: 50%;
     height: 100%;
     right: 0;
-    background: purple;
+    background: white;
     display: flex;
     align-items: center;
     color: black;
     text-align: center;
+    z-index: 1;
+}
+
+.form-box.register {
+    visibility: hidden;
+
 }
 
 form {
@@ -46,6 +53,7 @@ form {
     margin: 10px 0;
 }
 
+
 .input-box {
     position: relative;
     margin: 30px 0;
@@ -54,7 +62,7 @@ form {
 .input-box input {
     width: 80%;
     padding: 13px;
-    background-color: white;
+    background-color: rgba(187, 187, 187, 0.281);
     border-radius: 8px;
     border: none;
     outline: none;
@@ -90,7 +98,7 @@ form {
 .btn {
     width: 80%;
     height: 48px;
-    background-color: #7494ec; 
+    background: #6e0e9e; 
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0,0,0,0.1); 
     border: none;
@@ -105,3 +113,45 @@ form {
     margin: 15px 0;
 }
 
+.toggle-box {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: white;
+    
+}
+
+.toggle-box::before {
+    content: '';
+    position: absolute;
+    width: 300%;
+    height: 100%;
+    background: linear-gradient(0.5turn, #b020f7 0.5%, #31004a 150%);
+    z-index: 2;
+    left: -250%;
+    border-radius: 150px;
+}
+
+.toggle-panel {
+    position: absolute;
+    width: 50%;
+    height: 100%; 
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+}
+
+.toggle-panel p {
+    margin-bottom: 20px; 
+}
+
+.toggle-panel .btn {
+    width: 160px;
+    height: 46px;
+    color: white; 
+    background: transparent;
+    border: 2px solid white;
+}
