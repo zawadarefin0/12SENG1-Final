@@ -23,7 +23,7 @@ body {
     background: #fff;
     border-radius: 30px;
     box-shadow: 0 0 30px rgba(0,0,0,.2);
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .form-box {
