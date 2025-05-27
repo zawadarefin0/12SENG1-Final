@@ -2,10 +2,10 @@ const container = document.querySelector('.container')
 const registerBtn = document.querySelector('.register-btn')
 const loginBtn = document.querySelector('.login-btn')
 
-registerBtn.addEventlistener('click', () => {
+registerBtn.addEventListener('click', () => {
     container.classList.add('active')
 });
 
-loginBtn.addEventlistener('click', () => {
+loginBtn.addEventListener('click', () => {
     container.classList.remove('active')
 });

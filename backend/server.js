@@ -23,9 +23,9 @@ const db = new sqlite3.Database(dbPath, (err) => {
     } else {
         console.log("Connected to database");
         db.run(`CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
             username TEXT,
-            email TEXT,
+            email TEXT UNIQUE,
             password TEXT,
             role TEXT
             )`);
