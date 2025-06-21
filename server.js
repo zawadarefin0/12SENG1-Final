@@ -49,8 +49,12 @@ router.post('/login', (req, res) => {
     })
 })
 
+// Logout 
+router.post('/logout', (req, res) => {
+    req.session.destroy(() => res.json({ message: "Logged out" })) ;
+});
 
-
+module.exports = router;
 
 app.use(session({
     secret: 'petcarer_secret',
