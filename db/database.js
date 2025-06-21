@@ -5,8 +5,9 @@ db.serialize(() => {
     db.run(`
         CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT
-        username TEXT UNIQUE,
-        password TEXT,
+        username TEXT NOT NULL UNIQUE,
+        email TEXT NOT NULL UNIQUE,
+        password TEXT, 
         role TEXT CHECK(role IN ('owner', 'carer', 'admin'))
         )
         `);
@@ -23,3 +24,5 @@ db.serialize(() => {
         FOREIGN KEY(user_id) REFERENCES users(id)
         )`)
 })
+
+module.exports = db;
