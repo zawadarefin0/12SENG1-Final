@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3').verbose();
-const db = new sqlite3.Database('./db/petcarer.db');
+const db = new sqlite3.Database('./db/database.db');
 const bcrypt = require('bcryptjs');
 
 // CREATE TABLES on load
@@ -64,12 +64,12 @@ db.get("SELECT * FROM users WHERE username = ?", [defaultAdmin.username], (err, 
         if (err) {
           console.error("Error creating admin account:", err.message);
         } else {
-          console.log("✅ Default admin account created: username = admin, password = Admin123");
+          console.log(`Default admin account created: username = ${defaultAdmin.username}, password = ${defaultAdmin.password}`);
         }
       }
     );
   } else {
-    console.log("✅ Admin account already exists");
+    console.log("Admin account exists.");
   }
 });
 
