@@ -22,6 +22,7 @@ body {
     height: 550px;
     background: #fff;
     border-radius: 30px;
+    margin: 20px;
     box-shadow: 0 0 30px rgba(0,0,0,.2);
     overflow: hidden;
 }
@@ -37,10 +38,19 @@ body {
     color: black;
     text-align: center;
     z-index: 1;
+    transition: .6s ease-in-out 1.2s, visibility 0s 1s;
+}
+
+.container.active .form-box {
+    right: 50%;
 }
 
 .form-box.register {
     visibility: hidden;
+    
+}
+.container.active .form-box.register {
+    visibility: visible;
 
 }
 
@@ -124,13 +134,13 @@ form {
 .toggle-box::before {
     content: '';
     position: absolute;
+    left: -250%;
     width: 300%;
     height: 100%;
     background: linear-gradient(0.5turn, #b020f7 0.5%, #31004a 150%);
     z-index: 2;
-    left: -250%;
     border-radius: 150px;
-    transition: 1s ease-in-out;
+    transition: 1.8s ease-in-out;
 }
 
 .container.active .toggle-box::before {
