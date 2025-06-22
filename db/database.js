@@ -44,7 +44,7 @@ db.serialize(() => {
 const defaultAdmin = {
   username: 'admin',
   email: 'admin@petcarer.com',
-  password: 'Admin123', // must meet password rules
+  password: 'Admin123',
   role: 'admin'
 };
 
