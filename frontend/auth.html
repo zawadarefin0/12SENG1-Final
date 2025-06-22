@@ -1,66 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PetSeek</title>
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <link rel="stylesheet" href="style.css"/>
-    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-  </head>
-  <body>
-    <div class="container">
-      <div class="form-box login">
-        <form action="">
-          <h1>Login</h1>
-          <div class="input-box">
-            <input type="text" placeholder="Username" required />
-            <i class='bxr bx-user-square'></i> 
-          </div>
-          <div class="input-box">
-            <input type="password" placeholder="Password" required />
-          </div>
-          <div class="forgot-link">
-            <a href="">Forgot Password?</a>
-          </div>  
-          <button type="submit" class="btn">Login</button>
-        </form>
-      </div>
-      <div class="form-box register">
-        <form id="registerForm" action="">
-          <h1>Registration</h1>
-          <div class="input-box">
-            <input type="text" name="username" placeholder="Username" required />
-            <i class='bxr bx-user-square'></i> 
-          </div>
-          <div class="input-box">
-            <input type="text" name="email" placeholder="Email" required />
-            <i class='bxr bx-user-square'></i> 
-          </div>
-          <div class="input-box">
-            <input type="password" name="password" placeholder="Password" required />
-          </div>
-          <select name="role">
-            <option value="owner">Pet Owner</option>
-            <option value="carer">Pet Carer</option>
-          </select>
-          <button type="submit" class="btn">Register</button>
-        </form>
-      </div>
-      <div class="toggle-box">
-        <div class="toggle-panel toggle-left">
-          <h1>Welcome!</h1>
-          <p>Don't have an account?</p>
-          <button class="btn register-btn">Register Now</button>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PetSeek</title>
+  <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+  <link rel="stylesheet" href="style.css" />
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+  <div class="container">
+    <div class="form-box login">
+      <form name="loginForm">
+        <h1>Login</h1>
+        <div class="input-box">
+          <input type="text" name='username' placeholder="Username" required />
+          <i class='bxr bx-user-square'></i>
         </div>
-        <div class="toggle-panel toggle-right">
-          <h1>Welcome back</h1>
-          <p>Already have an account?</p>
-          <button class="btn login-btn">Login</button>
+        <div class="input-box">
+          <input type="password" name='password' placeholder="Password" required />
         </div>
+        <div class="forgot-link">
+          <a href="">Forgot Password?</a>
+        </div>
+        <button type="submit" class="btn">Login</button>
+      </form>
+    </div>
+    <div class="form-box register">
+      <form id="registerForm" action="">
+        <h1>Registration</h1>
+        <div class="input-box">
+          <input type="text" name="username" placeholder="Username" required />
+          <i class='bxr bx-user-square'></i>
+        </div>
+        <div class="input-box">
+          <input type="text" name="email" placeholder="Email" required />
+          <i class='bxr bx-user-square'></i>
+        </div>
+        <div class="input-box">
+          <input type="password" name="password" placeholder="Password" required />
+        </div>
+        <select name="role">
+          <option value="owner">Pet Owner</option>
+          <option value="carer">Pet Carer</option>
+        </select>
+        <button type="submit" class="btn">Register</button>
+      </form>
+    </div>
+    <div class="toggle-box">
+      <div class="toggle-panel toggle-left">
+        <h1>Welcome!</h1>
+        <p>Don't have an account?</p>
+        <button class="btn register-btn">Register Now</button>
+      </div>
+      <div class="toggle-panel toggle-right">
+        <h1>Welcome back</h1>
+        <p>Already have an account?</p>
+        <button class="btn login-btn">Login</button>
       </div>
     </div>
+  </div>
 
-    <script src="app.js"></script>
-  </body>
+  <script>
+    // register post request
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      const data = {
+        username: form.username.value,
+        email: form.email.value,
+        password: form.password.value,
+        role: form.role.value
+      };
+      const res = await fetch('auth/register', {
+        method: "POST",
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      })
+      const result = await res.json()
+      alert(result.message || result.error)
+    })
+
+    // login post request
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const form = e.target;
+
+      const loginData = {
+        username: form.username.value,
+        password: form.password.value
+      }
+
+      try {
+        const res = await fetch('/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(loginData)
+        })
+        const result = await res.json()
+
+        if (res.ok) {
+          alert("Login Successful!")
+
+          switch (result.role) {
+            case 'owner':
+              window.location.href = "/pet-owner.html";
+              break;
+            case 'carer':
+              window.location.href = '/pet-carer.html';
+              break;
+            case 'admin':
+              window.location.href = '/admin.html';
+              break;
+          }
+        } else {
+          alert(result.error || "Login failed.")
+        }
+      } catch (error) {
+        alert("An error occured during login.");
+        console.error(error);
+      }
+    })
+  </script>
+</body>
+
 </html>
