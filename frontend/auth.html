@@ -56,7 +56,7 @@
         <button class="btn register-btn">Register Now</button>
       </div>
       <div class="toggle-panel toggle-right">
-        <h1>Welcome back</h1>
+        <h1>Welcome back!</h1>
         <p>Already have an account?</p>
         <button class="btn login-btn">Login</button>
       </div>
@@ -64,6 +64,18 @@
   </div>
 
   <script>
+    const container = document.querySelector('.container')
+    const registerBtn = document.querySelector('.register-btn')
+    const loginBtn = document.querySelector('.login-btn')
+
+    registerBtn.addEventListener('click', () => {
+      container.classList.add('active')
+    })
+    loginBtn.addEventListener('click', () => {
+      container.classList.remove('active')
+    })
+
+
     // register post request
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
       e.preventDefault();
