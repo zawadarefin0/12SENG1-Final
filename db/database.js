@@ -16,7 +16,7 @@ db.serialize(() => {
     if (err) {
       console.error("Failed to create 'users' table:", err.message);
     } else {
-      console.log("users table created");
+      console.log("users table found");
     }
   });
 
@@ -35,7 +35,7 @@ db.serialize(() => {
     if (err) {
       console.error("Failed to create 'posts' table:", err.message);
     } else {
-      console.log("posts table created");
+      console.log("posts table found");
     }
   });
 });
