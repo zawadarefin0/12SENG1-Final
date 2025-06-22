@@ -2,16 +2,15 @@ const express = require('express');
 const session = require('express-session');
 const bodyParser = require('body-parser');
 const db = require('./db/database')
+const path = require('path');
 
-const authRoutes = require('./routes/auth');
-const petRoutes = require('./routes/pet');
-const adminRoutes = require('./routes/admin')
 
 const app = express()
 const port = 3000
 
-app.use(bodyParser.json());
-app.use(express.static('public'));
+const authRoutes = require('./routes/auth');
+const petRoutes = require('./routes/pet');
+const adminRoutes = require('./routes/admin')
 
 // Session management
 app.use(session({
@@ -19,6 +18,13 @@ app.use(session({
     resave: false,
     saveUninitialized: true
 }));
+
+app.use(express.static(path.join(__dirname, 'frontend')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+});
+
+app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
 app.use('/pets', petRoutes);
