@@ -3,11 +3,12 @@ const db = require('../db/database');
 const router = express.Router();
 
 // Pet owner adding a post
-router.post('add', (req, res) => {
+router.post('/add', (req, res) => {
     if (req.session.user?.role !== 'owner') return res.sendStatus(403)
-    const { pet_name, pet_age, description, image_url } = req.body;
-    db.run('INSERT INTO posts (user_id, pet_name, pet_age description, image_url) VALUES (?, ?, ?, ?)',
-        [req.session.user.id, pet_name, pet_age, description, image_url], 
+    const { pet_name, pet_age, description, image_url, services } = req.body;
+    const servicesStr = Array.isArray(services) ? services.join(',') : services;
+    db.run('INSERT INTO posts (user_id, pet_name, pet_age, description, image_url, services) VALUES (?, ?, ?, ?, ?, ?)',
+        [req.session.user.id, pet_name, pet_age, description, image_url, servicesStr],
         err => {
             if (err) return res.status(500).json({ error: err.message })
             res.json({ message: "Post created" })
