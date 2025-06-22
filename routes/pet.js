@@ -17,8 +17,8 @@ router.post('/add', (req, res) => {
 })
 
 // Viewing posts 
-router.get('all', (req, res) => {
-    db.all("SELECT posts.*, users.username FROM post JOIN users on posts.user_id = users.id", [], (err, posts) => {
+router.get('/all', (req, res) => {
+    db.all("SELECT posts.*, users.username FROM posts JOIN users on posts.user_id = users.id", [], (err, posts) => {
         if (err) return res.status(500).json({ error: err.message })
             res.json(posts)
     })

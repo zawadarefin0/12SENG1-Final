@@ -24,11 +24,11 @@ router.delete('/user/:id', (req, res) => {
 })
 
 // Delete a post
-router.delete('/post/:id'), (req, res) => {
+router.delete('/post/:id', (req, res) => {
     db.run('DELETE FROM posts WHERE id = ?', [req.params.id], err => {
         if (err) return res.status(500).json({ error: err.message })
             res.json({ message: "Post Deleted" })
     })
-}
+})
 
 module.exports = router;

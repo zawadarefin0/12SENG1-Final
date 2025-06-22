@@ -22,7 +22,7 @@ router.post('/register', (req, res) => {
 
     const hash = bcrypt.hashSync(password, 10);
     db.run(
-        "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)") 
+        "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
         [username, email, hash, role], 
         err => {
             if (err) return res.status(400).json({
@@ -31,7 +31,7 @@ router.post('/register', (req, res) => {
             res.json({
                 message: "Registered Successfully"
             });
-        }
+        })
 })
 
 // Login
