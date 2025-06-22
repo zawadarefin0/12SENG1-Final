@@ -6,33 +6,39 @@ const router = express.Router();
 
 // Register
 router.post('/register', (req, res) => {
-    const { username, email, password, role } = req.body;
-    
-    // Email Regex check
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(email)) {
-        return res.status(400).json({ error: "Invalid email format!" })
-    }
+  const { username, email, password, role } = req.body;
 
-    // Password Regex check
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/; 
-    if (!passwordRegex.test(password)) {
-        return res.status(400).json({ error: "Invalid format for password"})
-    }
+  // Email and password validation
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/;
 
-    const hash = bcrypt.hashSync(password, 10);
-    db.run(
-        "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
-        [username, email, hash, role], 
-        err => {
-            if (err) return res.status(400).json({
-                error: "Username or email already exists"
-            });
-            res.json({
-                message: "Registered Successfully"
-            });
-        })
-})
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ error: "Invalid email format!" });
+  }
+
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      error: "Invalid password format."
+    });
+  }
+
+  const hash = bcrypt.hashSync(password, 10);
+
+  console.log("Registering with:", username, email, role)
+  db.run(
+    "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
+    [username, email, hash, role],
+    (err) => {
+      if (err) {
+        console.error("SQL error:", err.message);
+        return res.status(400).json({ error: "Username or email may already exist, or invalid input." });
+      }
+      res.json({ message: "Registered Successfully" });
+    }
+  );
+});
+
+
 
 // Login
 router.post('/login', (req, res) => {
