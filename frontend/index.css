@@ -1,8 +1,36 @@
 * {
-    * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: "Lexend", "sans-serif";
 }
+
+
+.nav-container {
+    width: 100vw;
+    display: flex;
+    min-width: 100vw;
+    height: calc(10vh + 10px);
+    min-height: 60px;
+    background:  #4d0570;
+    justify-content: space-between;
 }
+
+.nav-container a img {
+    max-height: calc(10vh + 10px);
+    min-height: 60px;
+}
+
+.nav-container .auth-container {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.auth-container {
+    color: white;
+    display: flex;
+    justify-content: flex-end;
+    background-color: black;
+    align-items: center;
+}
+
