@@ -95,6 +95,16 @@ form {
     color: #888
 }
 
+select {
+    width: 80%;
+    height: 40px;
+    font-size: 16px;
+    padding: 10px, 0px;
+    margin-bottom: 30px;
+}
+
+
+
 .forgot-link {
     margin: -15px 0 15px;
 }
