@@ -16,6 +16,17 @@ body {
     background: linear-gradient(0.25turn, #1e092b 0.5%, #8a0bd9 150%);
 }
 
+.logo {
+    width: 20%;
+    position: absolute;
+    float: top;
+    transform: translateY(-38vh);
+}
+
+.logo img {
+    z-index: 3;
+}
+
 .container {
     position: relative;
     width: 850px;
