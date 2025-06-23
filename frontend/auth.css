@@ -59,6 +59,13 @@ body {
     right: 50%;
 }
 
+select {
+    border: none;
+    background: rgba(187, 187, 187, 0.281);
+    border-radius: 8px;
+    padding-left: 11px;
+}
+
 .form-box.register {
     visibility: hidden;
     
