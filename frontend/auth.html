@@ -23,10 +23,11 @@
         <h1>Login</h1>
         <div class="input-box">
           <input type="text" name='username' placeholder="Username" required />
-          <i class='bxr bx-user-square'></i>
+          <ion-icon id="input-icon" name="person-outline"></ion-icon>
         </div>
         <div class="input-box">
           <input type="password" name='password' placeholder="Password" required />
+          <ion-icon id="input-icon" name="key-outline"></ion-icon>
         </div>
         <div class="forgot-link">
           <a href="">Forgot Password?</a>
@@ -39,14 +40,15 @@
         <h1>Registration</h1>
         <div class="input-box">
           <input type="text" name="username" placeholder="Username" required />
-          <i class='bxr bx-user-square'></i>
+          <ion-icon id="input-icon" name="person-outline"></ion-icon>
         </div>
         <div class="input-box">
           <input type="text" name="email" placeholder="Email" required />
-          <i class='bxr bx-user-square'></i>
+          <ion-icon id="input-icon" name="mail-outline"></ion-icon>
         </div>
         <div class="input-box">
           <input type="password" name="password" placeholder="Password" required />
+          <ion-icon id="input-icon" name="key-outline"></ion-icon>
         </div>
         <select name="role" required>
           <option value="">-- Select An Option --</option>
@@ -144,6 +146,8 @@
       }
     })
   </script>
+<script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+<script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
 </body>
 
 </html>

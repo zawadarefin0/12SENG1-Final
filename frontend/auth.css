@@ -30,6 +30,12 @@ body {
     z-index: 3;
 }
 
+#input-icon {
+    position: absolute;
+    transform: translateX(-34px) translateY(11.5px);
+    font-size: 24px;
+}
+
 .container {
     position: relative;
     width: 850px;
