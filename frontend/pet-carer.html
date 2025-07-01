@@ -12,20 +12,55 @@
       <a href="index.html">
         <img src="assets/banner.png" alt="" />
       </a>
-      <div class="auth-container">
-        <a href="auth.html">
-          <div class="login">Login</div>
-        </a>
-        <div class="register">
-          <a href="auth.html?action=register">Register</a>
-        </div>
-      </div>
+      <div id="auth-container"></div>
     </div>
-    <h1>Pet Carers</h1>
-    <a href="index.html">Home Page</a>
-    <a href="admin.html">Admin Page</a>
-    <a href="auth.html">Login/Register</a>
-    <a href="pet-carer.html">Pet Carers</a>
-    <a href="pet-owner.html">Pet Owners</a>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        async function updateAuthArea() {
+          console.log("function is working");
+          const res = await fetch("/auth/status");
+          const status = await res.json();
+          const authDiv = document.getElementById("auth-container");
+
+          if (status.loggedIn) {
+            console.log("logged in");
+            const logoutBtn = document.createElement("button");
+            logoutBtn.textContent = "Logout";
+            logoutBtn.id = "logout";
+            logoutBtn.addEventListener("click", logout);
+            authDiv.appendChild(logoutBtn);
+          } else {
+            console.log("logged out");
+            const loginLink = document.createElement("a");
+            loginLink.href = "auth.html";
+
+            const loginDiv = document.createElement("div");
+            loginDiv.className = "login";
+            loginDiv.textContent = "Login";
+
+            loginLink.appendChild(loginDiv);
+            authDiv.appendChild(loginLink);
+
+            const registerDiv = document.createElement("div");
+            registerDiv.className = "register";
+
+            const registerLink = document.createElement("a");
+            registerLink.href = "auth.html?action=register";
+            registerLink.textContent = "Register";
+
+            registerDiv.appendChild(registerLink);
+            authDiv.appendChild(registerDiv);
+          }
+        }
+
+        async function logout() {
+          await fetch("/auth/logout", { method: "POST" });
+          updateAuthArea();
+          window.location.href = "index.html"
+        }
+
+        updateAuthArea();
+      });
+    </script>
   </body>
 </html>

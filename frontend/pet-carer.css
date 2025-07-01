@@ -8,6 +8,7 @@
 }
 
 
+
 .nav-container {
     width: 100vw;
     min-width: 100vw;
@@ -41,7 +42,7 @@
     padding: 5px;
 }
 
-.auth-container {
+#auth-container {
     font-size: 1.1rem;
     color: white;
     display: flex;
@@ -59,8 +60,20 @@
     text-decoration: none;
 }
 
-.auth-container a:visited, a:link, a:hover, a:active {
+#auth-container a:visited, a:link, a:hover, a:active {
     text-decoration: none;
     color: white;
 }
+
+#logout {
+    border: none;
+    background-color: transparent;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: white;
+    background-color: purple;
+    padding: 5px 10px;
+    border-radius: 7.5px;
+}
+
 
