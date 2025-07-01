@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js && start http://localhost:3000/"
+    "start": "concurrently \"node server.js\" \"npx open-cli http://localhost:3000\""
   },
   "repository": {
     "type": "git",
@@ -26,5 +26,10 @@
     "express-session": "^1.18.1",
     "express-sessions": "^1.0.6",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.0",
+    "open": "^10.1.2",
+    "open-cli": "^8.0.0"
   }
 }
