@@ -84,6 +84,16 @@
       container.classList.remove('active')
     })
 
+    window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const action = params.get('action');
+    const container = document.querySelector('.container');
+
+    if (action === 'register') {
+      container.classList.add('active');
+    }
+  });
+
 
     // register post request
     document.getElementById('registerForm').addEventListener('submit', async (e) => {
