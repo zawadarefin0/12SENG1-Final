@@ -12,11 +12,14 @@ const authRoutes = require('./routes/auth');
 const petRoutes = require('./routes/pet');
 const adminRoutes = require('./routes/admin')
 
-// Session management
 app.use(session({
-    secret: 'petcarer_secret',
-    resave: false,
-    saveUninitialized: true
+  secret: 'petcarer_secret',
+  resave: false,
+  saveUninitialized: false,
+  cookie: {
+    httpOnly: true,
+    maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days
+  }
 }));
 
 app.use(express.static(path.join(__dirname, 'frontend')));

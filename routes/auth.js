@@ -52,7 +52,21 @@ router.post('/login', (req, res) => {
     })
 })
 
-// Logout 
+// Check if you are logged in 
+router.get('/status', (req, res) => {
+  if (req.session.user) {
+    res.json({
+      loggedIn: true,
+      user: req.session.user
+    });
+  } else {
+    res.json({ loggedIn: false });
+  }
+});
+
+// Logout
+
+
 router.post('/logout', (req, res) => {
     req.session.destroy(() => res.json({ message: "Logged out" })) ;
 });
