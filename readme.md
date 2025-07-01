@@ -1,7 +1,7 @@
 # How to run?
 ### To Initialise the workspace for the first time, run this command in the BASH terminal
 ```
-npm init -y && npm install sqlite3 body-parser cors express bcryptjs express-server && node server.js && start http://localhost:3000
+npm init -y && npm install sqlite3 body-parser cors express bcryptjs express-server && npm install concurrently open-cli --save-dev && concurrently \"node server.js\" \"npx open-cli http://localhost:3000\"
 ```
 
 ### To start the server, run this command in the BASH terminal
