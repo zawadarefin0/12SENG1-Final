@@ -6,6 +6,7 @@
     <title>PetSeek</title>
     <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
     <link rel="stylesheet" href="pet-owner.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <div class="nav-container">
@@ -52,26 +53,25 @@
               required
             ></textarea>
           </div>
-          <div name="image_url" class="attachment"></div>
           <div class="selection">
             <label
-              ><input type="checkbox" name="services" value="pet hosting" /> Pet
+              ><input type="checkbox" name="services" value="Pet Hosting" /> Pet
               Hosting</label
             ><br />
             <label
-              ><input type="checkbox" name="services" value="pet sitting" /> Pet
+              ><input type="checkbox" name="services" value="Pet Sitting" /> Pet
               Sitting</label
             ><br />
             <label
-              ><input type="checkbox" name="services" value="pet daycare" /> Pet
+              ><input type="checkbox" name="services" value="Pet Daycare" /> Pet
               Daycare</label
             ><br />
             <label
-              ><input type="checkbox" name="services" value="pet house" /> House
+              ><input type="checkbox" name="services" value="Pet House" /> House
               Visits</label
             ><br />
             <label
-              ><input type="checkbox" name="services" value="dog walking" /> Dog
+              ><input type="checkbox" name="services" value="Dog Walking" /> Dog
               Walking</label
             ><br />
           </div>
@@ -115,6 +115,8 @@
 
             registerDiv.appendChild(registerLink);
             authDiv.appendChild(registerDiv);
+
+            
           }
         }
 
@@ -132,18 +134,33 @@
         const res = await fetch("/pets/mine", { credentials: "include" });
         const posts = await res.json();
         const container = document.getElementById("posts");
-        container.innerHTML = "You have no posts!";
+        container.innerHTML = "";
 
         posts.forEach((post) => {
           const div = document.createElement("div");
           div.className = "post";
-          div.innerHTML = `
-          <strong>${post.pet_name} (${post.pet_age})</strong><br>
-          <img src="${post.image_url}" width="100"><br>
-          ${post.description}<br>
-          <em>${post.services}</em><br>
-          <button onclick="deletePost(${post.id})">Delete</button>
-        `;
+
+          const strong = document.createElement("h2");
+          strong.textContent = `${post.pet_name} (Age: ${post.pet_age})`;
+          div.appendChild(strong);
+
+          const descText = document.createTextNode(post.description);
+          div.appendChild(descText);
+
+          const em = document.createElement("em");
+          const servText = document.createElement("h3");
+          servText.textContent = "Services:";
+          div.appendChild(servText);
+          em.textContent = post.services;
+          div.appendChild(em);
+          div.appendChild(document.createElement("br"));
+
+          const button = document.createElement("button");
+          button.className = "delete"
+          button.textContent = "Delete";
+          button.addEventListener("click", () => deletePost(post.id));
+          div.appendChild(button);
+
           container.appendChild(div);
         });
       }
@@ -164,8 +181,16 @@
         }
       }
 
+      // RIGHT SIDE FORM FUNCTIONALITY
       document.getElementById("form").addEventListener("submit", async (e) => {
         e.preventDefault();
+        const selectedServices = document.querySelectorAll(
+          'input[name="services"]:checked'
+        );
+        if (selectedServices.length === 0) {
+          alert("Please select at least one service.");
+          return;
+        }
         const form = e.target;
         const services = Array.from(
           form.querySelectorAll('input[name="services"]:checked')
@@ -174,7 +199,6 @@
           pet_name: form.pet_name.value,
           pet_age: form.pet_age.value,
           description: form.description.value,
-          image_url: form.image_url.value,
           services,
         };
 
