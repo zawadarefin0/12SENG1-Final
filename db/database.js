@@ -27,7 +27,6 @@ db.serialize(() => {
       pet_name TEXT NOT NULL,
       pet_age TEXT,
       description TEXT,
-      image_url TEXT,
       services TEXT,
       FOREIGN KEY(user_id) REFERENCES users(id)
     );
@@ -51,38 +50,6 @@ db.serialize(() => {
 `);
 });
 
-// admin account auto creation
-const defaultAdmin = {
-  username: 'admin',
-  email: 'admin@petcarer.com',
-  password: 'Admin123',
-  role: 'admin'
-};
-
-const hashedPassword = bcrypt.hashSync(defaultAdmin.password, 10);
-
-db.get("SELECT * FROM users WHERE username = ?", [defaultAdmin.username], (err, row) => {
-  if (err) {
-    console.error("Error checking for admin:", err.message);
-    return;
-  }
-
-  if (!row) {
-    db.run(
-      "INSERT INTO users (username, email, password, role) VALUES (?, ?, ?, ?)",
-      [defaultAdmin.username, defaultAdmin.email, hashedPassword, defaultAdmin.role],
-      (err) => {
-        if (err) {
-          console.error("Error creating admin account:", err.message);
-        } else {
-          console.log(`Default admin account created: username = ${defaultAdmin.username}, password = ${defaultAdmin.password}`);
-        }
-      }
-    );
-  } else {
-    console.log("Admin account exists.");
-  }
-});
 
 
 module.exports = db;
