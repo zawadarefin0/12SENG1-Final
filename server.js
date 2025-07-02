@@ -8,10 +8,6 @@ const path = require('path');
 const app = express()
 const port = 3000
 
-const authRoutes = require('./routes/auth');
-const petRoutes = require('./routes/pet');
-const adminRoutes = require('./routes/admin')
-
 app.use(session({
   secret: 'petcarer_secret',
   resave: false,
@@ -21,6 +17,11 @@ app.use(session({
     maxAge: 7 * 24 * 60 * 60 * 1000  // 7 days
   }
 }));
+
+const authRoutes = require('./routes/auth');
+const petRoutes = require('./routes/pet');
+const adminRoutes = require('./routes/admin')
+
 
 app.use(express.static(path.join(__dirname, 'frontend')));
 app.use('/assets', express.static(path.join(__dirname, 'frontend', 'assets')));
