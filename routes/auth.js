@@ -55,9 +55,17 @@ router.post('/login', (req, res) => {
 // Check if you are logged in 
 router.get('/status', (req, res) => {
   if (req.session.user) {
-    res.json({
-      loggedIn: true,
-      user: req.session.user
+    db.get('SELECT username FROM users WHERE id = ?', [req.session.user.id], (err, row) => {
+      if (err) return res.status(500).json({ error: "Database error" });
+
+      res.json({
+        loggedIn: true,
+        user: {
+          id: req.session.user.id,
+          role: req.session.user.role,
+          username: row?.username || "Unknown"
+        }
+      });
     });
   } else {
     res.json({ loggedIn: false });
