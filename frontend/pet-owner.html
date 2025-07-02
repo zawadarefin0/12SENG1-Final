@@ -16,70 +16,73 @@
     </div>
     <div class="container">
       <div class="left">
-        <div class="posts">
-          <div class="post">
-            <div class="post-left">
-              <p>Post</p>
-            </div>
-            <div class="post-right">
-              <div class="image">image</div>
-            </div>
-          </div>
-          <div class="post">
-            <div class="post-left">
-              <p>Post</p>
-            </div>
-            <div class="post-right">
-              <div class="image">image</div>
-            </div>
-          </div>
-          <div class="post">
-            <div class="post-left">
-              <p>Post</p>
-            </div>
-            <div class="post-right">
-              <div class="image">image</div>
-            </div>
-          </div>
+        <div id="posts">
+          <h1>No connection... Check the database connection!</h1>
         </div>
       </div>
       <div class="right">
-        <form action="">
+        <form action="" id="form">
           <h1>Add your pet!</h1>
           <div class="nameage-container">
             <div class="name">
               <input
                 maxlength="40"
                 type="name"
-                name="name"
+                name="pet_name"
                 placeholder="Your Pet Name . . ."
                 required
               />
             </div>
             <div class="age">
-              <input type="number" min="1" max="99" placeholder="Age . . . " />
+              <input
+                name="pet_age"
+                type="number"
+                min="1"
+                max="99"
+                placeholder="Age . . . "
+              />
             </div>
           </div>
           <div class="description">
             <textarea
               maxlength="90"
               type="name"
-              name="name"
+              name="description"
               placeholder="Description . . ."
               required
             ></textarea>
           </div>
+          <div name="image_url" class="attachment"></div>
           <div class="selection">
-            
+            <label
+              ><input type="checkbox" name="services" value="pet hosting" /> Pet
+              Hosting</label
+            ><br />
+            <label
+              ><input type="checkbox" name="services" value="pet sitting" /> Pet
+              Sitting</label
+            ><br />
+            <label
+              ><input type="checkbox" name="services" value="pet daycare" /> Pet
+              Daycare</label
+            ><br />
+            <label
+              ><input type="checkbox" name="services" value="pet house" /> House
+              Visits</label
+            ><br />
+            <label
+              ><input type="checkbox" name="services" value="dog walking" /> Dog
+              Walking</label
+            ><br />
           </div>
           <button type="submit" class="btn">Submit</button>
         </form>
       </div>
     </div>
     <script>
+      // LOGOUT BUTTON FUNCTIONALITY
       document.addEventListener("DOMContentLoaded", () => {
         async function updateAuthArea() {
-          console.log("function is working");
           const res = await fetch("/auth/status");
           const status = await res.json();
           const authDiv = document.getElementById("auth-container");
@@ -122,6 +125,70 @@
 
         updateAuthArea();
       });
+
+      // LEFT SIDE POSTS LOADING FUNCTION
+      async function loadPosts() {
+        console.log("loadPosts");
+        const res = await fetch("/pets/mine", { credentials: "include" });
+        const posts = await res.json();
+        const container = document.getElementById("posts");
+        container.innerHTML = "You have no posts!";
+
+        posts.forEach((post) => {
+          const div = document.createElement("div");
+          div.className = "post";
+          div.innerHTML = `
+          <strong>${post.pet_name} (${post.pet_age})</strong><br>
+          <img src="${post.image_url}" width="100"><br>
+          ${post.description}<br>
+          <em>${post.services}</em><br>
+          <button onclick="deletePost(${post.id})">Delete</button>
+        `;
+          container.appendChild(div);
+        });
+      }
+
+      async function deletePost(id) {
+        const confirm = await Swal.fire({
+          title: "Are you sure?",
+          text: "This will delete your post permanently.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, delete it!",
+        });
+
+        if (confirm.isConfirmed) {
+          await fetch(`/pets/${id}`, { method: "DELETE" });
+          await fetch(`/pets/remove-from-carers/${id}`, { method: "DELETE" });
+          loadPosts();
+        }
+      }
+
+      document.getElementById("form").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const form = e.target;
+        const services = Array.from(
+          form.querySelectorAll('input[name="services"]:checked')
+        ).map((cb) => cb.value);
+        const data = {
+          pet_name: form.pet_name.value,
+          pet_age: form.pet_age.value,
+          description: form.description.value,
+          image_url: form.image_url.value,
+          services,
+        };
+
+        await fetch("/pets/add", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(data),
+        });
+
+        form.reset();
+        loadPosts();
+      });
+
+      loadPosts();
     </script>
   </body>
 </html>
