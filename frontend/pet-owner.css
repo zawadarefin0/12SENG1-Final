@@ -246,3 +246,9 @@ textarea {
     color: #fff;
     font-weight: 600;
 }
+
+
+ion-icon {
+    font-size: 1.5em;
+    margin-left: 5px;
+}
