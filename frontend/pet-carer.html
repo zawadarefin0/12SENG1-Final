@@ -187,15 +187,37 @@
       }
 
       async function acceptJob(postId) {
-        await fetch(`/pets/accept/${postId}`, { method: "POST" });
-        loadAvailablePosts();
-        loadMyJobs();
+        const confirm = await Swal.fire({
+          title: "Accept this job?",
+          text: "You will be responsible for this pet.",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonText: "Yes, accept it!",
+          cancelButtonText: "Cancel",
+        });
+
+        if (confirm.isConfirmed) {
+          await fetch(`/pets/accept/${postId}`, { method: "POST" });
+          loadAvailablePosts();
+          loadMyJobs();
+        }
       }
 
       async function unacceptJob(postId) {
-        await fetch(`/pets/unaccept/${postId}`, { method: "DELETE" });
-        loadAvailablePosts();
-        loadMyJobs();
+        const confirm = await Swal.fire({
+          title: "Remove this job?",
+          text: "The job will be returned to the available list.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Yes, remove it!",
+          cancelButtonText: "Cancel",
+        });
+
+        if (confirm.isConfirmed) {
+          await fetch(`/pets/unaccept/${postId}`, { method: "DELETE" });
+          loadAvailablePosts();
+          loadMyJobs();
+        }
       }
     </script>
     <script
@@ -206,5 +228,6 @@
       nomodule
       src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
     ></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>
