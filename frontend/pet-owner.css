@@ -106,7 +106,7 @@
     overflow: auto;
 }
 
-.posts {
+#posts {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 20px;
@@ -220,8 +220,16 @@ textarea {
     margin-top: 15px;
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 0.608);
-    height: 300px;
+    height: 200px;
     width: 100%;
+}
+
+.attachment {
+    height: 46px;
+    width: 100%;
+    margin-top: 15px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.608);
 }
 
 .btn {
