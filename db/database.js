@@ -38,6 +38,17 @@ db.serialize(() => {
       console.log("posts table found");
     }
   });
+
+  db.run(`
+  CREATE TABLE IF NOT EXISTS carer_jobs (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    carer_id INTEGER NOT NULL,
+    post_id INTEGER NOT NULL,
+    FOREIGN KEY(carer_id) REFERENCES users(id),
+    FOREIGN KEY(post_id) REFERENCES posts(id),
+    UNIQUE(carer_id, post_id)
+  )
+`);
 });
 
 // admin account auto creation
