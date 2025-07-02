@@ -205,6 +205,22 @@
         }
       }
 
+      // sanitasation stuff
+      function sanitizeInput(str) {
+        return str.replace(
+          /[<>&"'`]/g,
+          (c) =>
+            ({
+              "<": "&lt;",
+              ">": "&gt;",
+              "&": "&amp;",
+              '"': "&quot;",
+              "'": "&#x27;",
+              "`": "&#x60;",
+            }[c])
+        );
+      }
+
       // RIGHT SIDE FORM FUNCTIONALITY
       document.getElementById("form").addEventListener("submit", async (e) => {
         e.preventDefault();
