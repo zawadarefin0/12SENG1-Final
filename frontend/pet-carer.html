@@ -14,75 +14,197 @@
       </a>
       <div id="auth-container"></div>
     </div>
+
+    <div class="container">
+      <div class="left">
+        <div id="posts-left"></div>
+      </div>
+      <div class="right">
+        <div id="posts-right"></div>
+      </div>
+    </div>
+
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        async function updateAuthArea() {
-          console.log("function is working");
+      async function updateAuthArea() {
+        console.log("function is working");
+        const res = await fetch("/auth/status");
+        const status = await res.json();
+        const authDiv = document.getElementById("auth-container");
+
+        if (status.loggedIn) {
+          console.log("logged in");
+          const logoutBtn = document.createElement("button");
+          logoutBtn.textContent = "Logout";
+          logoutBtn.id = "logout";
+          logoutBtn.addEventListener("click", logout);
+          authDiv.appendChild(logoutBtn);
+
+          const profileLink = document.createElement("a");
+          profileLink.className = "profile-link";
+
           const res = await fetch("/auth/status");
           const status = await res.json();
-          const authDiv = document.getElementById("auth-container");
 
           if (status.loggedIn) {
-            console.log("logged in");
-            const logoutBtn = document.createElement("button");
-            logoutBtn.textContent = "Logout";
-            logoutBtn.id = "logout";
-            logoutBtn.addEventListener("click", logout);
-            authDiv.appendChild(logoutBtn);
+            const role = status.user.role;
 
-            const profileLink = document.createElement("a");
-            profileLink.className = "profile-link";
-
-            const res = await fetch("/auth/status");
-            const status = await res.json();
-
-            if (status.loggedIn) {
-              const role = status.user.role;
-
-              if (role === "carer") {
-                profileLink.setAttribute("href", "pet-carer.html");
-              } else if (role === "owner") {
-                profileLink.setAttribute("href", "pet-owner.html");
-              }
+            if (role === "carer") {
+              profileLink.setAttribute("href", "pet-carer.html");
+            } else if (role === "owner") {
+              profileLink.setAttribute("href", "pet-owner.html");
             }
-
-            const icon = document.createElement("ion-icon");
-            icon.setAttribute("name", "person-outline");
-            profileLink.appendChild(icon);
-
-            document.getElementById("auth-container").appendChild(profileLink);
-          } else {
-            console.log("logged out");
-            const loginLink = document.createElement("a");
-            loginLink.href = "auth.html";
-
-            const loginDiv = document.createElement("div");
-            loginDiv.className = "login";
-            loginDiv.textContent = "Login";
-
-            loginLink.appendChild(loginDiv);
-            authDiv.appendChild(loginLink);
-
-            const registerDiv = document.createElement("div");
-            registerDiv.className = "register";
-
-            const registerLink = document.createElement("a");
-            registerLink.href = "auth.html?action=register";
-            registerLink.textContent = "Register";
-
-            registerDiv.appendChild(registerLink);
-            authDiv.appendChild(registerDiv);
           }
-        }
 
-        async function logout() {
-          await fetch("/auth/logout", { method: "POST" });
-          updateAuthArea();
-          window.location.href = "index.html";
-        }
+          const icon = document.createElement("ion-icon");
+          icon.setAttribute("name", "person-outline");
+          profileLink.appendChild(icon);
 
+          document.getElementById("auth-container").appendChild(profileLink);
+        } else {
+          console.log("logged out");
+          const loginLink = document.createElement("a");
+          loginLink.href = "auth.html";
+
+          const loginDiv = document.createElement("div");
+          loginDiv.className = "login";
+          loginDiv.textContent = "Login";
+
+          loginLink.appendChild(loginDiv);
+          authDiv.appendChild(loginLink);
+
+          const registerDiv = document.createElement("div");
+          registerDiv.className = "register";
+
+          const registerLink = document.createElement("a");
+          registerLink.href = "auth.html?action=register";
+          registerLink.textContent = "Register";
+
+          registerDiv.appendChild(registerLink);
+          authDiv.appendChild(registerDiv);
+        }
+      }
+
+      async function logout() {
+        await fetch("/auth/logout", { method: "POST" });
         updateAuthArea();
+        window.location.href = "index.html";
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        updateAuthArea();
+        loadAvailablePosts();
+        loadMyJobs();
       });
+
+      async function loadAvailablePosts() {
+        const res = await fetch("/pets/available");
+        const posts = await res.json();
+        const container = document.getElementById("posts-left");
+        container.innerHTML = "";
+        const title = document.createElement("h1");
+        title.textContent = "Available Posts:";
+        container.appendChild(title);
+        title.classList = "title";
+
+        posts.forEach((post) => {
+          const div = document.createElement("div");
+          div.className = "post";
+
+          const title = document.createElement("h2");
+          title.textContent = `${post.pet_name} (Age: ${post.pet_age})`;
+
+          const desc = document.createElement("p");
+          desc.textContent = post.description;
+
+          const username = document.createElement("p");
+          username.innerHTML = `<strong>Owner:</strong> ${post.username}`;
+
+          const servText = document.createElement("h3");
+          servText.textContent = "Services:";
+
+          const services = document.createElement("em");
+          services.textContent = post.services;
+
+          const btn = document.createElement("button");
+          btn.textContent = "Accept Job";
+          btn.className = "btn";
+          btn.onclick = () => acceptJob(post.id);
+
+          div.appendChild(title);
+          div.appendChild(desc);
+          div.appendChild(username);
+          div.appendChild(servText);
+          div.appendChild(services);
+          div.appendChild(btn);
+
+          container.appendChild(div);
+        });
+      }
+
+      async function loadMyJobs() {
+        const res = await fetch("/pets/myjobs");
+        const jobs = await res.json();
+        const container = document.getElementById("posts-right");
+        container.innerHTML = "";
+        const title = document.createElement("h1");
+        title.textContent = "Your posts claimed:";
+        container.appendChild(title);
+        title.classList = "title";
+
+        jobs.forEach((post) => {
+          const div = document.createElement("div");
+          div.className = "post";
+
+          const title = document.createElement("h2");
+          title.textContent = `${post.pet_name} (Age: ${post.pet_age})`;
+
+          const desc = document.createElement("p");
+          desc.textContent = post.description;
+
+          const username = document.createElement("p");
+          username.innerHTML = `<strong>Owner:</strong> ${post.username}`;
+
+          const servText = document.createElement("h3");
+          servText.textContent = "Services:";
+
+          const services = document.createElement("em");
+          services.textContent = post.services;
+
+          const btn = document.createElement("button");
+          btn.textContent = "Remove Job";
+          btn.className = "btn";
+          btn.onclick = () => unacceptJob(post.id);
+
+          div.appendChild(title);
+          div.appendChild(desc);
+          div.appendChild(username);
+          div.appendChild(servText);
+          div.appendChild(services);
+          div.appendChild(btn);
+
+          container.appendChild(div);
+        });
+      }
+
+      async function acceptJob(postId) {
+        await fetch(`/pets/accept/${postId}`, { method: "POST" });
+        loadAvailablePosts();
+        loadMyJobs();
+      }
+
+      async function unacceptJob(postId) {
+        await fetch(`/pets/unaccept/${postId}`, { method: "DELETE" });
+        loadAvailablePosts();
+        loadMyJobs();
+      }
     </script>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
+    ></script>
   </body>
 </html>
