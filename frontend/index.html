@@ -15,11 +15,31 @@
       <div id="auth-container"></div>
     </div>
 
-    <div class="dash"></div>
-    <div class="general"></div>
-    <div class="review"></div>
+    <div id="dash">
+      <h1>Hey! Welcome to PetSeek!</h1>
+      <p id="w">
+      </p>
+    </div>
 
     <script>
+      document.addEventListener("DOMContentLoaded", async () => {
+        try {
+          const res = await fetch("/auth/status");
+          const status = await res.json();
+
+          const welcome = document.getElementById("w");
+
+          if (status.loggedIn) {
+            welcome.textContent = `Welcome! You are signed in.`;
+          } else {
+            welcome.textContent = "Please Log in or sign up to use our services!";
+          }
+        } catch (err) {
+          console.error("Error checking auth:", err);
+          document.getElementById("welcome-message").textContent = "Welcome!";
+        }
+      });
+
       document.addEventListener("DOMContentLoaded", () => {
         async function updateAuthArea() {
           console.log("function is working");
@@ -83,7 +103,7 @@
         async function logout() {
           logoutBtn = document.getElementById("logout");
           await fetch("/auth/logout", { method: "POST" });
-          logoutBtn.remove();
+          window.location.href = "index.html";
           updateAuthArea();
         }
 
