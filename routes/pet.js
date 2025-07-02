@@ -4,10 +4,10 @@ const router = express.Router();
 
 router.post('/add', (req, res) => {
     if (req.session.user?.role !== 'owner') return res.sendStatus(403)
-    const { pet_name, pet_age, description, image_url, services } = req.body;
-    const servicesStr = Array.isArray(services) ? services.join(',') : services;
-    db.run('INSERT INTO posts (user_id, pet_name, pet_age, description, image_url, services) VALUES (?, ?, ?, ?, ?, ?)',
-        [req.session.user.id, pet_name, pet_age, description, image_url, servicesStr],
+    const { pet_name, pet_age, description, services } = req.body;
+    const servicesStr = Array.isArray(services) ? services.join(', ') : services;
+    db.run('INSERT INTO posts (user_id, pet_name, pet_age, description, services) VALUES (?, ?, ?, ?, ?)',
+        [req.session.user.id, pet_name, pet_age, description, servicesStr],
         err => {
             if (err) return res.status(500).json({ error: err.message })
             res.json({ message: "Post created" })
@@ -58,6 +58,25 @@ router.delete('/unaccept/:postId', (req, res) => {
       res.json({ message: "Job removed" });
     }
   );
+});
+
+router.delete('/:id', (req, res) => {
+  if (req.session.user?.role !== 'owner') return res.sendStatus(403);
+
+  const postId = req.params.id;
+
+  // Optional: Verify the post belongs to this owner
+  db.get('SELECT user_id FROM posts WHERE id = ?', [postId], (err, post) => {
+    if (err) return res.status(500).json({ error: err.message });
+    if (!post) return res.status(404).json({ error: "Post not found" });
+    if (post.user_id !== req.session.user.id) return res.status(403).json({ error: "Not your post" });
+
+    // Delete post
+    db.run('DELETE FROM posts WHERE id = ?', [postId], function(err) {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "Post deleted" });
+    });
+  });
 });
 
 router.get('/myjobs', (req, res) => {
