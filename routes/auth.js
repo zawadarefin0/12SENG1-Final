@@ -10,7 +10,7 @@ router.post('/register', (req, res) => {
 
   // Email and password validation
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,20}$/;
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,20}$/;
 
   if (!emailRegex.test(email)) {
     return res.status(400).json({ error: "Invalid email format!" });
