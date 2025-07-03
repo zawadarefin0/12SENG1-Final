@@ -18,7 +18,7 @@ router.post('/register', (req, res) => {
 
   if (!passwordRegex.test(password)) {
     return res.status(400).json({
-      error: "Invalid password format."
+      error: "Invalid password format. Must have atleast 1 uppercase, 1 number and be between 8-20 characters"
     });
   }
 
