@@ -18,7 +18,6 @@ app.use(session({
   }
 }));
 
-const authRoutes = require('./routes/auth');
 const petRoutes = require('./routes/pet');
 const adminRoutes = require('./routes/admin')
 
@@ -37,7 +36,6 @@ app.use(bodyParser.json());
 
 app.use('/auth', authRoutes);
 app.use('/pets', petRoutes);
-app.use('/admin', adminRoutes);
 
 app.listen(port, (error) => {
     if (error) {
