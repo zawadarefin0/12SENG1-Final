@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('../db/database');
 const router = express.Router();
 
+// Creation of post as a pet owner
 router.post('/add', (req, res) => {
     if (req.session.user?.role !== 'owner') return res.sendStatus(403)
     const { pet_name, pet_age, description, services } = req.body;
@@ -15,6 +16,7 @@ router.post('/add', (req, res) => {
     )
 })
 
+//  Accepting jobs as a pet carer
 router.post('/accept/:postId', (req, res) => {
   if (req.session.user?.role !== 'carer') return res.sendStatus(403);
 
@@ -31,6 +33,7 @@ router.post('/accept/:postId', (req, res) => {
   );
 });
 
+// Showing all of your pets on your profile page
 router.get('/mine', (req, res) => {
   if (req.session.user?.role !== 'owner') return res.sendStatus(403);
 
@@ -44,6 +47,7 @@ router.get('/mine', (req, res) => {
   );
 });
 
+// Remove accepted job from carer profile
 router.delete('/unaccept/:postId', (req, res) => {
   if (req.session.user?.role !== 'carer') return res.sendStatus(403);
 
@@ -65,7 +69,7 @@ router.delete('/:id', (req, res) => {
 
   const postId = req.params.id;
 
-  // Optional: Verify the post belongs to this owner
+  // Verify the post belongs to this owner
   db.get('SELECT user_id FROM posts WHERE id = ?', [postId], (err, post) => {
     if (err) return res.status(500).json({ error: err.message });
     if (!post) return res.status(404).json({ error: "Post not found" });
@@ -79,6 +83,7 @@ router.delete('/:id', (req, res) => {
   });
 });
 
+// View jobs that you have accepted as a carer
 router.get('/myjobs', (req, res) => {
   if (req.session.user?.role !== 'carer') return res.sendStatus(403);
 
@@ -100,6 +105,7 @@ router.get('/myjobs', (req, res) => {
 });
 
 
+// Removes post from carers list
 router.delete('/remove-from-carers/:id', (req, res) => {
   db.run('DELETE FROM carer_jobs WHERE post_id = ?', [req.params.id], (err) => {
     if (err) return res.status(500).json({ error: err.message });
@@ -108,6 +114,7 @@ router.delete('/remove-from-carers/:id', (req, res) => {
 });
 
 
+// Show the posts available after the pet carer has accepted more than one post
 router.get('/available', (req, res) => {
   if (req.session.user?.role !== 'carer') return res.sendStatus(403);
 
@@ -127,6 +134,8 @@ router.get('/available', (req, res) => {
     }
   );
 });
+
+
 
 router.get('/all', (req, res) => {
     db.all("SELECT posts.*, users.username FROM posts JOIN users on posts.user_id = users.id", [], (err, posts) => {
