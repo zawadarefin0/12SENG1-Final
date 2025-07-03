@@ -18,8 +18,8 @@ app.use(session({
   }
 }));
 
+const authRoutes = require('./routes/auth');
 const petRoutes = require('./routes/pet');
-const adminRoutes = require('./routes/admin')
 
 
 app.use(express.static(path.join(__dirname, 'frontend')));
