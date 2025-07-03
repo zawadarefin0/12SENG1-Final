@@ -95,6 +95,7 @@
     grid-column-start: 1;
     grid-column-end: span 2;
     border-radius: 40px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .right {
@@ -104,6 +105,7 @@
     grid-column-start: 3;
     border-radius: 40px;
     overflow: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #posts {
