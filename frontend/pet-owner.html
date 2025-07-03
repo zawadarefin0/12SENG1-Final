@@ -9,19 +9,25 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
+    <!-- navigation bar container -->
     <div class="nav-container">
       <a href="index.html">
         <img src="assets/banner.png" alt="" />
       </a>
+      <!-- login/register button in navbar -->
       <div id="auth-container"></div>
     </div>
+    <!-- big container which is split up into two parts (left and right) -->
     <div class="container">
+      <!-- left side -->
       <div class="left">
         <div id="posts">
           <h1>No connection... Check the database connection!</h1>
         </div>
       </div>
+      <!-- right side -->
       <div class="right">
+        <!-- form for inputting pet information as a pet owner -->
         <form action="" id="form">
           <h1>Add your pet!</h1>
           <div class="nameage-container">
@@ -87,8 +93,8 @@
           const status = await res.json();
           const authDiv = document.getElementById("auth-container");
 
+          // if you are logged create a logout button in the auth-container div so the user can log out
           if (status.loggedIn) {
-            console.log("logged in");
             const logoutBtn = document.createElement("button");
             logoutBtn.textContent = "Logout";
             logoutBtn.id = "logout";
@@ -117,7 +123,7 @@
 
             document.getElementById("auth-container").appendChild(profileLink);
           } else {
-            console.log("logged out");
+            // if the user isnt logged in, it will display the login/register buttons
             const loginLink = document.createElement("a");
             loginLink.href = "auth.html";
 
@@ -203,22 +209,6 @@
           await fetch(`/pets/remove-from-carers/${id}`, { method: "DELETE" });
           loadPosts();
         }
-      }
-
-      // sanitasation stuff
-      function sanitizeInput(str) {
-        return str.replace(
-          /[<>&"'`]/g,
-          (c) =>
-            ({
-              "<": "&lt;",
-              ">": "&gt;",
-              "&": "&amp;",
-              '"': "&quot;",
-              "'": "&#x27;",
-              "`": "&#x60;",
-            }[c])
-        );
       }
 
       // RIGHT SIDE FORM FUNCTIONALITY
